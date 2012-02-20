@@ -7,6 +7,7 @@ using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
+using Lucene.Net.Search;
 using Lucene.Net.Store;
 using NUnit.Framework;
 using Lucene.Net;
@@ -132,6 +133,26 @@ namespace LuceneStudyTests
                 Assert.AreEqual(cidades.Count - 1, escritorIndice.MaxDoc());
                 Assert.AreEqual(cidades.Count - 1, escritorIndice.NumDocs());
             }
+        }
+
+        public int ObterQuantidadeItem(string identificadorCampo, string pesquisa)
+        {
+            int quantidadeItensEncontrados;
+            using(var pesquisaIndice = new IndexSearcher(diretorio, readOnly: true))
+            {
+                var termoPesquisa = new Term(identificadorCampo, pesquisa);
+                var consulta = new TermQuery(termoPesquisa);
+                var resultado = pesquisaIndice.Search(consulta, cidades.Count);
+                quantidadeItensEncontrados = resultado.TotalHits;
+            }
+            return quantidadeItensEncontrados;
+        }
+
+        [Test]
+        public void Atualizar_QuandoMudarCidade_DeveAtualizarIndices()
+        {
+            Assert.AreEqual(1, ObterQuantidadeItem("cidade", "Amsterdam"));
+
         }
     }
 
