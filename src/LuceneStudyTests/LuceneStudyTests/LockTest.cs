@@ -4,11 +4,14 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Lucene.Net.Analysis;
+using Lucene.Net.Analysis.Standard;
+using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.Store;
 using NUnit.Framework;
 using Lucene.Net;
 using Directory = Lucene.Net.Store.Directory;
+using Version = Lucene.Net.Util.Version;
 
 namespace LuceneStudyTests
 {
@@ -38,9 +41,75 @@ namespace LuceneStudyTests
     [TestFixture]
     public class IndexingTeste
     {
-        [Test]
-        public void Indexar_QuandoPassarAtributos_DeveIndexarCidades()
+        private List<Cidade> cidades = new List<Cidade>
+                                           {
+                                               new Cidade
+                                                   {
+                                                       Id = 1,
+                                                       Pais = "Holanda",
+                                                       Nome = "Amsterdam",
+                                                       Descricao = "Amsterdam tem muitas pontes."
+                                                   },
+                                               new Cidade
+                                                   {
+                                                       Id = 2,
+                                                       Pais = "Itália",
+                                                       Nome = "Veneza",
+                                                       Descricao = "Veneza tem muitos canais."
+                                                   }
+                                           };
+
+        private Directory diretorio;
+
+        [SetUp]
+        public void IniciarUnidadeTeste()
         {
+            diretorio = new RAMDirectory();
+            using (var escritorIndice = ObterEscritorIndice())
+            {
+                foreach (var cidade in cidades)
+                {
+                    Document documento = new Document();
+                    documento.Add(new Field("id", cidade.Id.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+                    documento.Add(new Field("pais", cidade.Pais, Field.Store.YES, Field.Index.NO));
+                    documento.Add(new Field("descricao", cidade.Descricao, Field.Store.NO, Field.Index.ANALYZED));
+                    documento.Add(new Field("cidade", cidade.Nome, Field.Store.YES, Field.Index.ANALYZED));
+                    escritorIndice.AddDocument(documento);
+                }
+            }
         }
+
+        private IndexWriter ObterEscritorIndice()
+        {
+            return new IndexWriter(diretorio, new StandardAnalyzer(Version.LUCENE_29), IndexWriter.MaxFieldLength.UNLIMITED);
+        }
+
+        [Test]
+        public void Indexar_QuandoObterEscritorIndice_CriarMesmaQuantidadeDeIndicesQueCidade()
+        {
+            using(var escritorIndice = ObterEscritorIndice())
+                Assert.AreEqual(cidades.Count, escritorIndice.NumDocs());
+        }
+
+        [Test]
+        public void Indexar_QuandoTentarLerDoIndice_DeveConseguirLerDoIndiceMesmaQuantidadeDeCidadesExistentes()
+        {
+            using(var leitorIndice = IndexReader.Open(diretorio, readOnly: true))
+            {
+                Assert.AreEqual(cidades.Count, leitorIndice.MaxDoc());
+                Assert.AreEqual(cidades.Count, leitorIndice.NumDocs());
+            }
+        }
+    }
+
+    public class Cidade
+    {
+        public int Id { get; set; }
+
+        public string Pais { get; set; }
+
+        public string Nome { get; set; }
+
+        public string Descricao { get; set; }
     }
 }
