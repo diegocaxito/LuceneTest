@@ -60,7 +60,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cidade.cs" />
+    <Compile Include="IndexingTeste.cs" />
     <Compile Include="LockTest.cs" />
+    <Compile Include="LuceneUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
