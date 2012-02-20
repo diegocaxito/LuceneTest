@@ -87,17 +87,50 @@ namespace LuceneStudyTests
         [Test]
         public void Indexar_QuandoObterEscritorIndice_CriarMesmaQuantidadeDeIndicesQueCidade()
         {
-            using(var escritorIndice = ObterEscritorIndice())
+            using (var escritorIndice = ObterEscritorIndice())
                 Assert.AreEqual(cidades.Count, escritorIndice.NumDocs());
         }
 
         [Test]
         public void Indexar_QuandoTentarLerDoIndice_DeveConseguirLerDoIndiceMesmaQuantidadeDeCidadesExistentes()
         {
-            using(var leitorIndice = IndexReader.Open(diretorio, readOnly: true))
+            using (var leitorIndice = IndexReader.Open(diretorio, readOnly: true))
             {
                 Assert.AreEqual(cidades.Count, leitorIndice.MaxDoc());
                 Assert.AreEqual(cidades.Count, leitorIndice.NumDocs());
+            }
+        }
+
+        [Test]
+        public void Deletar_QuandoTentarDeletarAntesDeOtimizar_DeveDeletarIndices_e_NaoDeveDiminuirMaxDocs()
+        {
+            using (var escritorIndice = ObterEscritorIndice())
+            {
+                Assert.AreEqual(cidades.Count, escritorIndice.NumDocs());
+
+                escritorIndice.DeleteDocuments(new Term("id", "1"));
+                escritorIndice.Commit();
+
+                Assert.IsTrue(escritorIndice.HasDeletions());
+                Assert.AreEqual(cidades.Count, escritorIndice.MaxDoc());
+                Assert.AreEqual(cidades.Count - 1, escritorIndice.NumDocs());
+            }
+        }
+
+        [Test]
+        public void Deletar_QuandoTentarDeletarIndiceDepoisDeOtimizar_DeveConterApenasUmDocumento()
+        {
+            using (var escritorIndice = ObterEscritorIndice())
+            {
+                Assert.AreEqual(cidades.Count, escritorIndice.NumDocs());
+
+                escritorIndice.DeleteDocuments(new Term("id", "1"));
+                escritorIndice.Optimize();
+                escritorIndice.Commit();
+
+                Assert.IsFalse(escritorIndice.HasDeletions());
+                Assert.AreEqual(cidades.Count - 1, escritorIndice.MaxDoc());
+                Assert.AreEqual(cidades.Count - 1, escritorIndice.NumDocs());
             }
         }
     }
