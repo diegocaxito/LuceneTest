@@ -34,4 +34,13 @@ namespace LuceneStudyTests
             }
         }
     }
+
+    [TestFixture]
+    public class IndexingTeste
+    {
+        [Test]
+        public void Indexar_QuandoPassarAtributos_DeveIndexarCidades()
+        {
+        }
+    }
 }
