@@ -64,6 +64,7 @@
     <Compile Include="IndexingTeste.cs" />
     <Compile Include="LockTest.cs" />
     <Compile Include="LuceneUtil.cs" />
+    <Compile Include="NearRealTimeTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

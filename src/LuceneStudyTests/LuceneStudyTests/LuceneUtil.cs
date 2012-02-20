@@ -8,7 +8,7 @@ namespace LuceneStudyTests
     {
         public static Analyzer ObterAnalyzer()
         {
-            return new StandardAnalyzer(ObterVersao());
+            return new SimpleAnalyzer();
         }
 
         public static Version ObterVersao()

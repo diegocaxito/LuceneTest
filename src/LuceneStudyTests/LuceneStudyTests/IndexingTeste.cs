@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
+using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
 using NUnit.Framework;
@@ -12,23 +12,7 @@ namespace LuceneStudyTests
     [TestFixture]
     public class IndexingTeste
     {
-        private List<Cidade> cidades = new List<Cidade>
-                                           {
-                                               new Cidade
-                                                   {
-                                                       Id = 1,
-                                                       Pais = "Holanda",
-                                                       Nome = "Amsterdam",
-                                                       Descricao = "Amsterdam tem muitas pontes."
-                                                   },
-                                               new Cidade
-                                                   {
-                                                       Id = 2,
-                                                       Pais = "Itália",
-                                                       Nome = "Veneza",
-                                                       Descricao = "Veneza tem muitos canais."
-                                                   }
-                                           };
+        private List<Cidade> cidades = Cidade.ObterCidades();
 
         private Directory diretorio;
 
@@ -118,13 +102,12 @@ namespace LuceneStudyTests
 
         public int ObterQuantidadeItem(string identificadorCampo, string pesquisa)
         {
-
             using (var pesquisaIndice = new IndexSearcher(diretorio, readOnly: true))
             {
                 var termoPesquisa = new Term(identificadorCampo, pesquisa.ToLower());
                 var consulta = new TermQuery(termoPesquisa);
-                var resultado = pesquisaIndice.Search(consulta, pesquisaIndice.MaxDoc()).TotalHits;
-                return resultado;
+                var resultado = pesquisaIndice.Search(consulta, pesquisaIndice.MaxDoc());
+                return resultado.ScoreDocs.Length;
             }
         }
 
@@ -151,7 +134,7 @@ namespace LuceneStudyTests
             }
 
             Assert.AreEqual(0, ObterQuantidadeItem(cidade, "Amsterdam"));
-            Assert.AreEqual(1, ObterQuantidadeItem(cidade, "Den Haag"));
+            Assert.AreEqual(1, ObterQuantidadeItem(cidade, "Den"));
         }
 
         [TearDown]
@@ -159,6 +142,25 @@ namespace LuceneStudyTests
         {
             using (var escritorIndice = ObterEscritorIndice())
                 escritorIndice.DeleteAll();
+        }
+
+        [Test]
+        public void QueryParser_QuandoProcurarPorUmaCidade_DeveRetornarResultado()
+        {
+            using (var pesquisa = new IndexSearcher(diretorio, true))
+            {
+                var tradutorPesquisa = new QueryParser(LuceneUtil.ObterVersao(), cidade, LuceneUtil.ObterAnalyzer());
+                var consulta = tradutorPesquisa.Parse("+SÃO +PAULO");
+                var resultadoPesquisa = pesquisa.Search(consulta, 10);
+                Assert.AreEqual(1, resultadoPesquisa.TotalHits);
+
+                Document documento = pesquisa.Doc(resultadoPesquisa.ScoreDocs[0].doc);
+                Assert.AreEqual("São Paulo", documento.Get(cidade));
+
+                consulta = tradutorPesquisa.Parse("são paulo OR new york");
+                resultadoPesquisa = pesquisa.Search(consulta, 10);
+                Assert.AreEqual(2, resultadoPesquisa.TotalHits, "São Paulo e New York foram encontradas");
+            }
         }
     }
 }
