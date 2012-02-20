@@ -30,8 +30,7 @@ namespace LuceneStudyTests
             {
                 IndexWriter outroEscritorIndice = null;
 
-                outroEscritorIndice = new IndexWriter(diretorio, new SimpleAnalyzer(),
-                                                      IndexWriter.MaxFieldLength.UNLIMITED);
+                outroEscritorIndice = new IndexWriter(diretorio, new SimpleAnalyzer(), IndexWriter.MaxFieldLength.UNLIMITED);
             }
         }
     }
