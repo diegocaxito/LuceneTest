@@ -35,7 +35,7 @@ namespace LuceneStudyTests
             /* 
              * Pesquisa por term queries são recomendados para buscar Ids de itens
              */
-            Directory diretorio = anunciosEmMemoria.Diretorio;
+            var diretorio = anunciosEmMemoria.Diretorio;
             using (var searcher = new IndexSearcher(diretorio, true))
             {
                 var termo = new Term(AnunciosEmMemoria.Id, "5");
@@ -168,9 +168,29 @@ namespace LuceneStudyTests
         }
 
         [Test]
-        public void WildcardQueryTest()
+        public void FuzzyQueryTest()
         {
+            string titulo = "titulo";
+            string texto = "texto";
+            using (var diretorio = new RAMDirectory())
+            {
+                IndexarArquivosEmDocumento(diretorio, new Field[]
+                                                          {
+                                                              new Field(titulo, "teste", Field.Store.YES, Field.Index.ANALYZED), 
+                                                              new Field(titulo, "teste", Field.Store.YES, Field.Index.ANALYZED)
+                                                          });
+            }
+        }
 
+        public void IndexarArquivosEmDocumento(Directory diretorio, IEnumerable<Field> campos)
+        {
+            using (var indexWriter = new IndexWriter(diretorio, new SimpleAnalyzer()))
+            {
+                var documento = new Document();
+                foreach (var campo in campos)
+                    documento.Add(campo);
+                indexWriter.AddDocument(documento);
+            }
         }
     }
 }
