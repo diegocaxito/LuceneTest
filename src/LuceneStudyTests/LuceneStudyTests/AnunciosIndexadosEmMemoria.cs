@@ -50,7 +50,7 @@ namespace LuceneStudyTests
             var documento4 = ObterDocumento(4, "Residencial/Comercial");
             var documento5 = ObterDocumento(5, "Residencial", "Funcionarios", "Montes Claros", "MG");
             var documento6 = ObterDocumento(6, "Comercial", "Funcionarios", "Montes Claros", "MG");
-            var documento7 = ObterDocumento(7, "Residencial", "Melo", "Montes Claros", "MG");
+            var documento7 = ObterDocumento(7, "Residencial", "Melo", "Montes Claros", "MG", 5000);
             var documento8 = ObterDocumento(8, "Residencial", "Funcionarios", "Belo Horizonte", "MG");
             var documento9 = ObterDocumento(9, "Comercial", "Centro", "Campinas", preco: 150);
             var documento10 = ObterDocumento(10, "Comercial", "Pampulha", "Belo Horizonte", "MG");
