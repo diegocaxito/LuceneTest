@@ -34,11 +34,9 @@ namespace LuceneStudyTests
                 var pesquisa = new IndexSearcher(leitorIndice);
                 var consulta = new TermQuery(new Term("text", "aaa"));
                 var resultado = pesquisa.Search(consulta, 1);
-                
-                Assert.AreEqual(quantidadeItensEsperados, resultado.TotalHits,
-                                string.Format("Resultado não encontrou {0} itens que se encaixavam",
-                                              quantidadeItensEsperados));
 
+                var mensagemErro = string.Format("Resultado não encontrou {0} itens que se encaixavam", quantidadeItensEsperados); 
+                Assert.AreEqual(quantidadeItensEsperados, resultado.TotalHits, mensagemErro);
 
                 var outroDocumento = new Document();
                 escritorIndice.DeleteDocuments(new Term("id", "7"));
