@@ -10,6 +10,7 @@ namespace LuceneStudyTests
 {
     public class AnunciosEmMemoria : IDisposable
     {
+        public const string Descricao = "descricao";
         public const string Id = "Id";
         public const string TipoImovel = "tipoImovel";
         public const string Bairro = "bairro";
@@ -18,11 +19,13 @@ namespace LuceneStudyTests
         public const string Preco = "preco";
 
         public Directory Diretorio { get; set; }
+        public Analyzer Analizador { get; set; }
 
         public AnunciosEmMemoria()
         {
             Diretorio = new RAMDirectory();
-            using (var indexWriter = new IndexWriter(Diretorio, new SimpleAnalyzer(), IndexWriter.MaxFieldLength.UNLIMITED))
+            Analizador = new SimpleAnalyzer();
+            using (var indexWriter = new IndexWriter(Diretorio, Analizador, IndexWriter.MaxFieldLength.UNLIMITED))
                 CriarBaseDocumentosImoveisEmMemoria(indexWriter);
         }
 
@@ -34,6 +37,10 @@ namespace LuceneStudyTests
             documento.Add(new Field(Bairro, bairro, Field.Store.YES, Field.Index.ANALYZED));
             documento.Add(new Field(Cidade, cidade, Field.Store.YES, Field.Index.ANALYZED));
             documento.Add(new Field(Estado, estado, Field.Store.YES, Field.Index.ANALYZED));
+            documento.Add(new Field(Descricao,
+                                    String.Format("Imovel {0} Bairro {1} Cidade {2} Estado {3} Preço Preco {4}",
+                                                  tipoImovel, bairro, cidade, estado, preco), Field.Store.YES,
+                                    Field.Index.ANALYZED));
 
             var campoPreco = new NumericField(Preco);
             campoPreco.SetDoubleValue(preco);
@@ -54,6 +61,10 @@ namespace LuceneStudyTests
             var documento8 = ObterDocumento(8, "Residencial", "Funcionarios", "Belo Horizonte", "MG");
             var documento9 = ObterDocumento(9, "Comercial", "Centro", "Campinas", preco: 150);
             var documento10 = ObterDocumento(10, "Comercial", "Pampulha", "Belo Horizonte", "MG");
+            var documento11 = ObterDocumento(10, "Aluguel", "Centro", "São Vicente");
+            var documento12 = ObterDocumento(10, "Apartamento Aluguel", "Centro", "São Vicente");
+            var documento13 = ObterDocumento(10, "Residencial", "Centro", "Santos");
+            
             indexWriter.AddDocument(documento);
             indexWriter.AddDocument(documento2);
             indexWriter.AddDocument(documento3);
@@ -64,6 +75,9 @@ namespace LuceneStudyTests
             indexWriter.AddDocument(documento8);
             indexWriter.AddDocument(documento9);
             indexWriter.AddDocument(documento10);
+            indexWriter.AddDocument(documento11);
+            indexWriter.AddDocument(documento12);
+            indexWriter.AddDocument(documento13);
         }
 
         public void ExtrairExplicacaoQueryComTermoPorCidade(Directory diretorio, Query query)

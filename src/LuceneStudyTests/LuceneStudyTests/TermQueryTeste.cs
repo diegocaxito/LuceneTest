@@ -5,6 +5,7 @@ using System.Text;
 using Lucene.Net.Analysis;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
+using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
 using NUnit.Framework;
@@ -115,7 +116,7 @@ namespace LuceneStudyTests
             return false;
         }
 
-        [TestCase(new[] { "quick", "lazy" }, "the quick brown fox jumped over the lazy dog", 7,TestName = "Quick and lazy with distance of 7")]
+        [TestCase(new[] { "quick", "lazy" }, "the quick brown fox jumped over the lazy dog", 7, TestName = "Quick and lazy with distance of 7")]
         [TestCase(new[] { "Sócrates", "amigo" }, "Sócrates é meu amigo, mas eu sou amigo da verdade", 10, TestName = "Sócrates e amigo com distancia de 10")]
         [TestCase(new[] { "Apartamento", "quartos" }, "Apartamento com quatro quartos", 2, TestName = "Apartamento e quarto com distância de 2")]
         public void PhraseQueryText(string[] frase, string textoParaProcurar, int distanciaEntrePalavras)
@@ -134,7 +135,7 @@ namespace LuceneStudyTests
                 {
                     var phraseQuery = new PhraseQuery();
                     phraseQuery.SetSlop(distanciaEntrePalavras);
-                    
+
                     foreach (var palavra in frase)
                         phraseQuery.Add(new Term(texto, palavra));
 
@@ -151,7 +152,7 @@ namespace LuceneStudyTests
             var textoResultado = new StringBuilder();
             textoResultado
                 .AppendLine(
-                    string.Format("\nNão encontrou \nDistância entre palavras: \"{0}\" \nTexto: \"{1}\"", 
+                    string.Format("\nNão encontrou \nDistância entre palavras: \"{0}\" \nTexto: \"{1}\"",
                                   distanciaEntrePalavras,
                                   textoParaProcurar));
 
@@ -176,20 +177,56 @@ namespace LuceneStudyTests
             {
                 IndexarArquivosEmDocumento(diretorio, new Field[]
                                                           {
-                                                              new Field(titulo, "teste", Field.Store.YES, Field.Index.ANALYZED), 
-                                                              new Field(titulo, "teste", Field.Store.YES, Field.Index.ANALYZED)
+                                                              new Field(titulo, "fuzzy", Field.Store.YES, Field.Index.ANALYZED), 
+                                                              new Field(titulo, "wuzzy", Field.Store.YES, Field.Index.ANALYZED)
                                                           });
+
+                using (var searcher = new IndexSearcher(diretorio, true))
+                {
+                    var query = new FuzzyQuery(new Term(titulo, "wuzza"));
+                    var matches = searcher.Search(query, 10);
+                    
+                    Assert.AreEqual(2, matches.TotalHits, "both close enough");
+                    Assert.IsTrue(matches.ScoreDocs[0].score != matches.ScoreDocs[1].score, "wuzzy closer then fuzzy");
+
+                    var doc = searcher.Doc(matches.ScoreDocs[0].doc);
+                    Assert.AreEqual("wuzzy", doc.Get(titulo), "wazza bear");
+                }
             }
         }
 
         public void IndexarArquivosEmDocumento(Directory diretorio, IEnumerable<Field> campos)
         {
-            using (var indexWriter = new IndexWriter(diretorio, new SimpleAnalyzer()))
-            {
-                var documento = new Document();
+            using (var indexWriter = new IndexWriter(diretorio, new SimpleAnalyzer(), IndexWriter.MaxFieldLength.UNLIMITED))
+            {   
                 foreach (var campo in campos)
+                {
+                    var documento = new Document();
                     documento.Add(campo);
-                indexWriter.AddDocument(documento);
+                    indexWriter.AddDocument(documento);
+                }
+            }
+        }
+
+        [TestCase(2, "Montes Claros", TestName = "Quando pesquisar por \"Montes Claros\" espero que retorne 2 resultados")]
+        [TestCase(1, "São Paulo", TestName = "Quando pesquisar por \"São Paulo\" espero que retorne 1 resultados")]
+        [TestCase(2, "Apartamento em São Vicente", TestName = "Quando pesquisar \"Apartamento em São Vicente\" espero que retorne 2 resultados")]
+        [TestCase(2, "Imovel residencial em São Paulo", TestName = "Quando pesquisar \"Imovel Residencial em São Paulo\" espero que retorne 2 resultados")]
+        [TestCase(1, "Apartamento para alugar em Santos", TestName = "Quando pesquisar por \"Apartamento para alugar em Santos\" espero que retorne 1 resultado")]
+        public void QueryParserTest_QuandoTestarEmAnuncios_DeveRealizarPesquisa(int quantidadeEsperadaResultado, string textoPesquisa)
+        {
+            using (var pesquisador = new IndexSearcher(anunciosEmMemoria.Diretorio, true))
+            {
+                var queryParser = new QueryParser(Lucene.Net.Util.Version.LUCENE_29, AnunciosEmMemoria.Descricao,
+                                            anunciosEmMemoria.Analizador);
+                queryParser.SetLowercaseExpandedTerms(true);
+                var query = queryParser.Parse(textoPesquisa);
+                var resultado = pesquisador.Search(query, 10);
+
+                Assert.AreEqual(quantidadeEsperadaResultado, resultado.ScoreDocs.Length);
+                
+
+                //todo: apresentar resultado
             }
         }
     }
