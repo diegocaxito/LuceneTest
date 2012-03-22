@@ -241,7 +241,7 @@ namespace LuceneStudyTests
             }
         }
 
-        [Test]
+        [Test, Ignore]
         public void QueryComPaginacao_QuandoPassarPaginacao_DevePaginar()
         {
             using (var pesquisador = new IndexSearcher(anunciosEmMemoria.Diretorio, true))
