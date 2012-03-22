@@ -34,8 +34,39 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="Lucene.Net">
-      <HintPath>..\packages\Lucene.Net.2.9.4.1\lib\net40\Lucene.Net.dll</HintPath>
+    <Reference Include="Lucene.Net, Version=2.9.4.1, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Users\Diego Caxito\Downloads\Completos\Aplicativos\bibliotecas\Lucene\bin\Lucene.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.Analyzers">
+      <HintPath>..\..\..\..\..\..\Users\Diego Caxito\Downloads\Completos\Aplicativos\bibliotecas\Lucene\bin\Contrib\Lucene.Net.Analyzers.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.Contrib.Core">
+      <HintPath>..\..\..\..\..\..\Users\Diego Caxito\Downloads\Completos\Aplicativos\bibliotecas\Lucene\bin\Contrib\Lucene.Net.Contrib.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.FastVectorHighlighter">
+      <HintPath>..\..\..\..\..\..\Users\Diego Caxito\Downloads\Completos\Aplicativos\bibliotecas\Lucene\bin\Contrib\Lucene.Net.FastVectorHighlighter.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.Highlighter">
+      <HintPath>..\..\..\..\..\..\Users\Diego Caxito\Downloads\Completos\Aplicativos\bibliotecas\Lucene\bin\Contrib\Lucene.Net.Highlighter.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.Queries">
+      <HintPath>..\..\..\..\..\..\Users\Diego Caxito\Downloads\Completos\Aplicativos\bibliotecas\Lucene\bin\Contrib\Lucene.Net.Queries.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.Search.Regex">
+      <HintPath>..\..\..\..\..\..\Users\Diego Caxito\Downloads\Completos\Aplicativos\bibliotecas\Lucene\bin\Contrib\Lucene.Net.Search.Regex.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.Search.SimpleFacetedSearch">
+      <HintPath>..\..\..\..\..\..\Users\Diego Caxito\Downloads\Completos\Aplicativos\bibliotecas\Lucene\bin\Contrib\Lucene.Net.Search.SimpleFacetedSearch.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.Snowball">
+      <HintPath>..\..\..\..\..\..\Users\Diego Caxito\Downloads\Completos\Aplicativos\bibliotecas\Lucene\bin\Contrib\Lucene.Net.Snowball.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.Spatial">
+      <HintPath>..\..\..\..\..\..\Users\Diego Caxito\Downloads\Completos\Aplicativos\bibliotecas\Lucene\bin\Contrib\Lucene.Net.Spatial.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.SpellChecker">
+      <HintPath>..\..\..\..\..\..\Users\Diego Caxito\Downloads\Completos\Aplicativos\bibliotecas\Lucene\bin\Contrib\Lucene.Net.SpellChecker.dll</HintPath>
     </Reference>
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>

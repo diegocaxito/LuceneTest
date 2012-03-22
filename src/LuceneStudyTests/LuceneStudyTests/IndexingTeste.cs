@@ -154,7 +154,7 @@ namespace LuceneStudyTests
                 var resultadoPesquisa = pesquisa.Search(consulta, 10);
                 Assert.AreEqual(1, resultadoPesquisa.TotalHits);
 
-                Document documento = pesquisa.Doc(resultadoPesquisa.ScoreDocs[0].doc);
+                Document documento = pesquisa.Doc(resultadoPesquisa.ScoreDocs[0].Doc);
                 Assert.AreEqual("São Paulo", documento.Get(cidade));
 
                 consulta = tradutorPesquisa.Parse("são paulo OR new york");

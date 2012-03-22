@@ -1,5 +1,6 @@
 ﻿using System;
 using Lucene.Net.Analysis;
+using Lucene.Net.Analysis.BR;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.QueryParsers;
@@ -10,6 +11,7 @@ namespace LuceneStudyTests
 {
     public class AnunciosEmMemoria : IDisposable
     {
+        public const string Referencia = "referencia";
         public const string Descricao = "descricao";
         public const string Id = "Id";
         public const string TipoImovel = "tipoImovel";
@@ -24,7 +26,8 @@ namespace LuceneStudyTests
         public AnunciosEmMemoria()
         {
             Diretorio = new RAMDirectory();
-            Analizador = new SimpleAnalyzer();
+            Analizador = new BrazilianAnalyzer();
+            
             using (var indexWriter = new IndexWriter(Diretorio, Analizador, IndexWriter.MaxFieldLength.UNLIMITED))
                 CriarBaseDocumentosImoveisEmMemoria(indexWriter);
         }
@@ -33,18 +36,25 @@ namespace LuceneStudyTests
         {
             var documento = new Document();
             documento.Add(new Field(Id, id.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            
             documento.Add(new Field(TipoImovel, tipoImovel, Field.Store.YES, Field.Index.ANALYZED));
             documento.Add(new Field(Bairro, bairro, Field.Store.YES, Field.Index.ANALYZED));
             documento.Add(new Field(Cidade, cidade, Field.Store.YES, Field.Index.ANALYZED));
             documento.Add(new Field(Estado, estado, Field.Store.YES, Field.Index.ANALYZED));
             documento.Add(new Field(Descricao,
                                     String.Format("Imovel {0} Bairro {1} Cidade {2} Estado {3} Preço Preco {4}",
-                                                  tipoImovel, bairro, cidade, estado, preco), Field.Store.YES,
+                                                  tipoImovel, bairro, cidade, estado, preco), 
+                                                  Field.Store.YES,
                                     Field.Index.ANALYZED));
 
             var campoPreco = new NumericField(Preco);
             campoPreco.SetDoubleValue(preco);
             documento.Add(campoPreco);
+
+            
+            var referencia = new NumericField(Referencia);
+            referencia.SetLongValue(id);
+            documento.Add(referencia);
             
             return documento;
         }
@@ -61,9 +71,10 @@ namespace LuceneStudyTests
             var documento8 = ObterDocumento(8, "Residencial", "Funcionarios", "Belo Horizonte", "MG");
             var documento9 = ObterDocumento(9, "Comercial", "Centro", "Campinas", preco: 150);
             var documento10 = ObterDocumento(10, "Comercial", "Pampulha", "Belo Horizonte", "MG");
-            var documento11 = ObterDocumento(10, "Aluguel", "Centro", "São Vicente");
-            var documento12 = ObterDocumento(10, "Apartamento Aluguel", "Centro", "São Vicente");
-            var documento13 = ObterDocumento(10, "Residencial", "Centro", "Santos");
+            var documento11 = ObterDocumento(11, "Aluguel", "Centro", "São Vicente");
+            var documento12 = ObterDocumento(12, "Apartamento Aluguel", "Centro", "São Vicente");
+            var documento13 = ObterDocumento(13, "Residencial", "Centro", "Santos");
+            var documento14 = ObterDocumento(14, "Apartamento Aluguel", "Centro", "Santos");
             
             indexWriter.AddDocument(documento);
             indexWriter.AddDocument(documento2);
@@ -78,6 +89,7 @@ namespace LuceneStudyTests
             indexWriter.AddDocument(documento11);
             indexWriter.AddDocument(documento12);
             indexWriter.AddDocument(documento13);
+            indexWriter.AddDocument(documento14);
         }
 
         public void ExtrairExplicacaoQueryComTermoPorCidade(Directory diretorio, Query query)
@@ -88,8 +100,8 @@ namespace LuceneStudyTests
 
                 foreach (var scoreDoc in topDocs.ScoreDocs)
                 {
-                    var explanation = indexSearcher.Explain(query, scoreDoc.doc);
-                    var document = indexSearcher.Doc(scoreDoc.doc);
+                    var explanation = indexSearcher.Explain(query, scoreDoc.Doc);
+                    var document = indexSearcher.Doc(scoreDoc.Doc);
                     Console.WriteLine("------\n{0}\n{1}", document.Get(TipoImovel), explanation);
                 }
             }
