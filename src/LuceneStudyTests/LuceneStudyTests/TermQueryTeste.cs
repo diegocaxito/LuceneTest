@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Lucene.Net.Analysis;
@@ -10,6 +11,7 @@ using Lucene.Net.Search;
 using Lucene.Net.Store;
 using NUnit.Framework;
 using Lucene.Net;
+using Directory = Lucene.Net.Store.Directory;
 
 namespace LuceneStudyTests
 {
@@ -266,6 +268,27 @@ namespace LuceneStudyTests
 
                 resultadoEncontrado.ToString();
             }
+        }
+
+        [Test]
+        public void SoundsLikeQuery_QuandoPassarDados_DeveSugerirOquePesquisar()
+        {
+            using(var directory = new RAMDirectory())
+            {
+                Analyzer analyzer = new MetaphoneReplacementAnalyzer();
+                using(var indexWriter = new IndexWriter(directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED))
+                {
+                    var document = new Document();
+                }
+            }
+        }
+    }
+
+    public class MetaphoneReplacementAnalyzer : Analyzer
+    {
+        public override TokenStream TokenStream(string fieldName, TextReader reader)
+        {
+            throw new NotImplementedException();
         }
     }
 }
