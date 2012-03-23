@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--This file represents the results of running a test suite-->
+<test-results name="C:\Projetos\Lucene\LuceneTest\src\LuceneStudyTests\LuceneStudyTests\bin\Debug\LuceneStudyTests.dll" total="7" errors="0" failures="1" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2012-03-22" time="14:58:02">
+  <environment nunit-version="2.5.9.10348" clr-version="2.0.50727.5446" os-version="Microsoft Windows NT 6.1.7601 Service Pack 1" platform="Win32NT" cwd="C:\Program Files\NUnit 2.5.9\bin\net-2.0" machine-name="DIEGOCAXITO-PC" user="Diego Caxito" user-domain="DiegoCaxito-PC" />
+  <culture-info current-culture="pt-BR" current-uiculture="pt-BR" />
+  <test-suite type="Assembly" name="C:\Projetos\Lucene\LuceneTest\src\LuceneStudyTests\LuceneStudyTests\bin\Debug\LuceneStudyTests.dll" executed="True" result="Failure" success="False" time="0.611" asserts="0">
+    <results>
+      <test-suite type="Namespace" name="LuceneStudyTests" executed="True" result="Failure" success="False" time="0.599" asserts="0">
+        <results>
+          <test-suite type="TestFixture" name="TermQueryTeste" executed="True" result="Failure" success="False" time="0.595" asserts="0">
+            <results>
+              <test-suite type="ParameterizedTest" name="QueryParserTest_QuandoTestarEmAnuncios_DeveRealizarPesquisa" executed="True" result="Failure" success="False" time="0.265" asserts="0">
+                <results>
+                  <test-case name="LuceneStudyTests.TermQueryTeste.Quando passar &quot;referencia:10&quot; deverá encontrar apenas uma referência" executed="True" result="Failure" success="False" time="0.129" asserts="1">
+                    <failure>
+                      <message><![CDATA[  Resultado encontrado
+  Expected: 1
+  But was:  0
+]]></message>
+                      <stack-trace><![CDATA[em LuceneStudyTests.TermQueryTeste.QueryParserTest_QuandoTestarEmAnuncios_DeveRealizarPesquisa(Int32 quantidadeEsperadaResultado, String textoPesquisa) na C:\Projetos\Lucene\LuceneTest\src\LuceneStudyTests\LuceneStudyTests\TermQueryTeste.cs:linha 240
+]]></stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case name="LuceneStudyTests.TermQueryTeste.Quando pesquisar por &quot;Apartamento para alugar em Santos&quot; espero que retorne 1 resultado" executed="True" result="Success" success="True" time="0.027" asserts="2" />
+                  <test-case name="LuceneStudyTests.TermQueryTeste.Quando pesquisar por &quot;Montes Claros&quot; espero que retorne 2 resultados" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                  <test-case name="LuceneStudyTests.TermQueryTeste.Quando pesquisar &quot;Apartamento em São Vicente&quot; espero que retorne 2 resultados" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                  <test-case name="LuceneStudyTests.TermQueryTeste.Quando pesquisar por &quot;montes claros&quot; espero que retorne 3 resultados" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                  <test-case name="LuceneStudyTests.TermQueryTeste.Quando pesquisar por &quot;São Paulo&quot; espero que retorne 1 resultados" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                  <test-case name="LuceneStudyTests.TermQueryTeste.Quando pesquisar &quot;Imovel Residencial em São Paulo&quot; espero que retorne 2 resultados" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

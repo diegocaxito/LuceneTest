@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuceneStudyTests", "LuceneS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuceneExplainerTest", "LuceneExplainerTest\LuceneExplainerTest.csproj", "{29901668-193E-4036-8C59-1BB549686D76}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnlyzerDemo", "AnlyzerDemo\AnlyzerDemo.csproj", "{ACD881B8-5906-406B-B1AB-B973B485B448}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,16 @@ Global
 		{29901668-193E-4036-8C59-1BB549686D76}.Release|Mixed Platforms.Build.0 = Release|x86
 		{29901668-193E-4036-8C59-1BB549686D76}.Release|x86.ActiveCfg = Release|x86
 		{29901668-193E-4036-8C59-1BB549686D76}.Release|x86.Build.0 = Release|x86
+		{ACD881B8-5906-406B-B1AB-B973B485B448}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{ACD881B8-5906-406B-B1AB-B973B485B448}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{ACD881B8-5906-406B-B1AB-B973B485B448}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{ACD881B8-5906-406B-B1AB-B973B485B448}.Debug|x86.ActiveCfg = Debug|x86
+		{ACD881B8-5906-406B-B1AB-B973B485B448}.Debug|x86.Build.0 = Debug|x86
+		{ACD881B8-5906-406B-B1AB-B973B485B448}.Release|Any CPU.ActiveCfg = Release|x86
+		{ACD881B8-5906-406B-B1AB-B973B485B448}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{ACD881B8-5906-406B-B1AB-B973B485B448}.Release|Mixed Platforms.Build.0 = Release|x86
+		{ACD881B8-5906-406B-B1AB-B973B485B448}.Release|x86.ActiveCfg = Release|x86
+		{ACD881B8-5906-406B-B1AB-B973B485B448}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
