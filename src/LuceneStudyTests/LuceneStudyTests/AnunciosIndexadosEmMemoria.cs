@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.BR;
 using Lucene.Net.Documents;
@@ -6,6 +7,8 @@ using Lucene.Net.Index;
 using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
+using Lucene.Net.Util;
+using Directory = Lucene.Net.Store.Directory;
 
 namespace LuceneStudyTests
 {
@@ -41,16 +44,19 @@ namespace LuceneStudyTests
             documento.Add(new Field(Bairro, bairro, Field.Store.YES, Field.Index.ANALYZED));
             documento.Add(new Field(Cidade, cidade, Field.Store.YES, Field.Index.ANALYZED));
             documento.Add(new Field(Estado, estado, Field.Store.YES, Field.Index.ANALYZED));
-            documento.Add(new Field(Descricao,
-                                    String.Format("Imovel {0} Bairro {1} Cidade {2} Estado {3} Preço Preco {4}",
-                                                  tipoImovel, bairro, cidade, estado, preco), 
-                                                  Field.Store.YES,
-                                    Field.Index.ANALYZED));
+            documento.Add(new Field(Descricao, 
+                String.Format("Imovel {0} Bairro {1} Cidade {2} Estado {3} Preço Preco {4}",
+                        tipoImovel, 
+                        bairro, 
+                        cidade, 
+                        estado, 
+                        preco), 
+                Field.Store.YES,
+                Field.Index.ANALYZED));
 
             var campoPreco = new NumericField(Preco);
             campoPreco.SetDoubleValue(preco);
             documento.Add(campoPreco);
-
             
             var referencia = new NumericField(Referencia);
             referencia.SetLongValue(id);
