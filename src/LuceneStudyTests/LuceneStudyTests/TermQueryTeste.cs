@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using Lucene.Net.Analysis;
@@ -11,6 +10,7 @@ using Lucene.Net.Search;
 using Lucene.Net.Store;
 using NUnit.Framework;
 using Lucene.Net;
+using SoundsLike;
 using Directory = Lucene.Net.Store.Directory;
 
 namespace LuceneStudyTests
@@ -91,15 +91,15 @@ namespace LuceneStudyTests
              */
 
             var pesquisarAnuncios = new TermQuery(new Term(AnunciosEmMemoria.Cidade, "Montes Claros"));
-            var pesquisa = NumericRangeQuery.NewDoubleRange(AnunciosEmMemoria.Preco, 1000, 100000, true, true);
+            var pesquisa = NumericRangeQuery.NewDoubleRange(AnunciosEmMemoria.Preco, 100, 100000, true, true);
             var booleanQuery = new BooleanQuery();
-            booleanQuery.Add(pesquisarAnuncios, BooleanClause.Occur.MUST);
-            booleanQuery.Add(pesquisa, BooleanClause.Occur.MUST);
+            booleanQuery.Add(pesquisarAnuncios, BooleanClause.Occur.SHOULD);
+            booleanQuery.Add(pesquisa, BooleanClause.Occur.SHOULD);
 
             using (var searcher = new IndexSearcher(anunciosEmMemoria.Diretorio, true))
             {
                 var matches = searcher.Search(booleanQuery, 10);
-                Assert.True(ItensContemCidadeSeProcura(searcher, matches, "Montes Claros"));
+                Assert.True(ItensContemCidadeSeProcura(searcher, matches, "Montes Claros"), "Não encontrou montes claros");
             }
         }
 
@@ -107,7 +107,7 @@ namespace LuceneStudyTests
         {
             var encontrouCidade = matches.ScoreDocs
                 .Select(scoreDoc => searcher.Doc(scoreDoc.Doc))
-                .Any(document => city.Equals(document.Get(AnunciosEmMemoria.Cidade), StringComparison.OrdinalIgnoreCase));
+                .Any(document => city.ToLower().Equals(document.Get(AnunciosEmMemoria.Cidade), StringComparison.OrdinalIgnoreCase));
 
             if (encontrouCidade)
             {
@@ -215,7 +215,7 @@ namespace LuceneStudyTests
         [TestCase(2, "Apartamento em São Vicente", TestName = "Quando pesquisar \"Apartamento em São Vicente\" espero que retorne 2 resultados")]
         [TestCase(4, "Imovel residencial em São Paulo", TestName = "Quando pesquisar \"Imovel Residencial em São Paulo\" espero que retorne 2 resultados")]
         [TestCase(2, "Apartamento para aluguel em Santos", TestName = "Quando pesquisar por \"Apartamento para alugar em Santos\" espero que retorne 1 resultado")]
-        [TestCase(1, "referencia:10", TestName = "Quando passar \"referencia:10\" deverá encontrar apenas uma referência")]
+        [TestCase(1, "Id:\"10\"", TestName = "Quando passar \"referencia:10\" deverá encontrar apenas uma referência")]
         [TestCase(3, "montes claros", TestName = "Quando pesquisar por \"montes claros\" espero que retorne 3 resultados")]
         public void QueryParserTest_QuandoTestarEmAnuncios_DeveRealizarPesquisa(int quantidadeEsperadaResultado, string textoPesquisa)
         {
@@ -243,33 +243,6 @@ namespace LuceneStudyTests
             }
         }
 
-        [Test, Ignore]
-        public void QueryComPaginacao_QuandoPassarPaginacao_DevePaginar()
-        {
-            using (var pesquisador = new IndexSearcher(anunciosEmMemoria.Diretorio, true))
-            {
-                var queryParser = new QueryParser(Lucene.Net.Util.Version.LUCENE_29,
-                                            AnunciosEmMemoria.Descricao,
-                                            anunciosEmMemoria.Analizador);
-                queryParser.SetLowercaseExpandedTerms(true);
-
-                var topScoreCollector = TopScoreDocCollector.Create(10, false);
-                var query = queryParser.Parse("montes claros");
-                
-                var resultado = pesquisador.Search(query, 10).ScoreDocs.Where(s => s.Score > 0.1999999F);
-                var resultadoEncontrado = new StringBuilder("Resultado encontrado");
-
-                foreach (var doc in resultado)
-                {
-                    var documentoEncontrado = pesquisador.Doc(doc.Doc);
-                    resultadoEncontrado.AppendLine(documentoEncontrado.Get(AnunciosEmMemoria.Descricao));
-                    resultadoEncontrado.AppendLine(string.Format("Score: {0}", doc.Score));
-                }
-
-                resultadoEncontrado.ToString();
-            }
-        }
-
         [Test]
         public void SoundsLikeQuery_QuandoPassarDados_DeveSugerirOquePesquisar()
         {
@@ -279,16 +252,20 @@ namespace LuceneStudyTests
                 using(var indexWriter = new IndexWriter(directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED))
                 {
                     var document = new Document();
+                    document.Add(new Field("contents", "cool cat", Field.Store.YES, Field.Index.ANALYZED));
+                    indexWriter.AddDocument(document);
+                }
+
+                using (var indexSearcher = new IndexSearcher(directory, true))
+                {
+                    var query = new QueryParser(Lucene.Net.Util.Version.LUCENE_29, "contents", analyzer).Parse("kool cat");
+                    TopDocs hits = indexSearcher.Search(query, 1);
+                    Assert.AreEqual(1, hits.TotalHits);
+                    int docId = hits.ScoreDocs[0].Doc;
+                    var doc = indexSearcher.Doc(docId);
+                    Assert.AreEqual("cool cat", doc.Get("contents"));
                 }
             }
-        }
-    }
-
-    public class MetaphoneReplacementAnalyzer : Analyzer
-    {
-        public override TokenStream TokenStream(string fieldName, TextReader reader)
-        {
-            throw new NotImplementedException();
         }
     }
 }

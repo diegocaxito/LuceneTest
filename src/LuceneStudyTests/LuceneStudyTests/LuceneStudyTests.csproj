@@ -98,10 +98,17 @@
     <Compile Include="LuceneUtil.cs" />
     <Compile Include="NearRealTimeTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SynonymAnalyzerTests.cs" />
     <Compile Include="TermQueryTeste.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SoundsLike\SoundsLike.csproj">
+      <Project>{6986233E-DBC6-40EF-9216-B5C2307C772A}</Project>
+      <Name>SoundsLike</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
