@@ -94,6 +94,7 @@
     <Compile Include="AnunciosIndexadosEmMemoria.cs" />
     <Compile Include="Cidade.cs" />
     <Compile Include="IndexingTeste.cs" />
+    <Compile Include="KeywordAnalyzerTest.cs" />
     <Compile Include="LockTest.cs" />
     <Compile Include="LuceneUtil.cs" />
     <Compile Include="NearRealTimeTest.cs" />
@@ -105,9 +106,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AnlyzerDemo\AnlyzerDemo.csproj">
+      <Project>{ACD881B8-5906-406B-B1AB-B973B485B448}</Project>
+      <Name>AnlyzerDemo</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SoundsLike\SoundsLike.csproj">
       <Project>{6986233E-DBC6-40EF-9216-B5C2307C772A}</Project>
       <Name>SoundsLike</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SynonymAnalyzer\SynonymAnalyzer.csproj">
+      <Project>{D60A40F1-A8C9-4609-913D-E7E08F391773}</Project>
+      <Name>SynonymAnalyzer</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

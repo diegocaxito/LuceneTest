@@ -1,28 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using Lucene.Net;
+using AnlyzerDemo;
 using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Analysis.Tokenattributes;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
+using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
-using Lucene.Net.Search.Vectorhighlight;
 using Lucene.Net.Store;
-using Lucene.Net.Util;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
-using Directory = System.IO.Directory;
+using SynonymAnalyzer;
 
 namespace LuceneStudyTests
 {
     [TestFixture]
     public class SynonymAnalyzerTests
     {
-        SynonymAnalyzer synonymAnalyzer = new SynonymAnalyzer(new SynonymEngineMock());
+        SynonymAnalyzer.SynonymAnalyzer synonymAnalyzer = new SynonymAnalyzer.SynonymAnalyzer(new SynonymEngineMock());
 
         [Test]
         public void SysnonymsTests()
@@ -35,7 +30,7 @@ namespace LuceneStudyTests
             while (stream.IncrementToken())
             {
                 Assert.AreEqual(expected[i], term.Term());
-                
+
                 int expectedPos;
                 if (i == 0)
                 {
@@ -57,7 +52,7 @@ namespace LuceneStudyTests
         public void Setup()
         {
             var directory = new RAMDirectory();
-            using(var writer = new IndexWriter(directory, synonymAnalyzer, IndexWriter.MaxFieldLength.UNLIMITED))
+            using (var writer = new IndexWriter(directory, synonymAnalyzer, IndexWriter.MaxFieldLength.UNLIMITED))
             {
                 var document = new Document();
                 document.Add(new Field("contents", "The quick brown fox jumps over the lazy dog", Field.Store.YES, Field.Index.ANALYZED));
@@ -84,106 +79,27 @@ namespace LuceneStudyTests
             pq.Add(new Term("contents", "hops"));
             Assert.AreEqual(1, indexSearcher.Search(pq, 10).TotalHits);
         }
-    }
 
-    public class SynonymAnalyzer : Analyzer
-    {
-        private ISynonymEngine engine;
-
-        public SynonymAnalyzer(ISynonymEngine engine)
+        [Test]
+        public void TestWithQueryParser()
         {
-            this.engine = engine;
+            var query =
+                new QueryParser(Lucene.Net.Util.Version.LUCENE_29, "contents", synonymAnalyzer).Parse("\"fox jumps\"");
+            Assert.AreEqual(1, indexSearcher.Search(query, 10).TotalHits);
+            Console.WriteLine("With SynonymAnalyzer, \"fox jumps\" parses to {0}", query.ToString("content"));
+
+            query =
+                new QueryParser(Lucene.Net.Util.Version.LUCENE_29, "contents",
+                                new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_29)).Parse("\"fox jumps\"");
+
+            Assert.AreEqual(1, indexSearcher.Search(query, 10).TotalHits);
+            Console.WriteLine("With StandardAnalyzer, \"fox jumps\" parses to {0}", query.ToString("content"));
         }
 
-        public override TokenStream TokenStream(string fieldName, TextReader reader)
-        {
-            return
-                new SynonymFilter(
-                    new StopFilter(true,
-                        new LowerCaseFilter(
-                            new StandardFilter(
-                                new StandardTokenizer(
-                                    Lucene.Net.Util.Version.LUCENE_29,
-                                    reader))),
-                        StopAnalyzer.ENGLISH_STOP_WORDS_SET),
-                    engine);
-        }
-    }
-
-    public class SynonymFilter : TokenFilter
-    {
-        public static string TOKEN_TYPE_SYNONYM = "synonym";
-        private Stack<string> synonymStack;
-        private ISynonymEngine engine;
-        private AttributeSource.State current;
-        private TermAttribute termAttr;
-        private PositionIncrementAttribute posIncrAttr;
-
-
-        public SynonymFilter(TokenStream input, ISynonymEngine engine)
-            : base(input)
-        {
-            synonymStack = new Stack<string>();
-            this.engine = engine;
-            this.termAttr = AddAttribute(typeof(TermAttribute)) as TermAttribute;
-            this.posIncrAttr = AddAttribute(typeof(PositionIncrementAttribute)) as PositionIncrementAttribute;
-        }
-
-        public override bool IncrementToken()
-        {
-            if (synonymStack.Count > 0)
-            {
-                var syn = synonymStack.Pop();
-                RestoreState(current);
-                termAttr.SetTermBuffer(syn);
-                posIncrAttr.SetPositionIncrement(0);
-                return true;
-            }
-            if (!input.IncrementToken())
-            {
-                return false;
-            }
-            if (AddAliasToStack())
-            {
-                current = CaptureState();
-            }
-            return true;
-        }
-
-        private bool AddAliasToStack()
-        {
-            String[] synonyms = engine.GetSynonyms(termAttr.Term());
-            if (synonyms == null)
-                return false;
-
-            foreach (var syn in synonyms)
-                synonymStack.Push(syn);
-
-            return true;
-        }
-    }
-
-    public interface ISynonymEngine
-    {
-        string[] GetSynonyms(string term);
-    }
-
-    class SynonymEngineMock : ISynonymEngine
-    {
-        private static HashMap<String, String[]> map = new HashMap<string, string[]>();
-
-        public SynonymEngineMock()
-        {
-            map.Put("quick", new string[]{"fast", "speedy"});
-            map.Put("jumps", new string[]{"leaps", "hops"});
-            map.Put("over", new string[]{"above"});
-            map.Put("lazy", new string[]{"pathetic", "sluggich"});
-            map.Put("dog", new string[]{"canine", "pooch"});
-        }
-
-        public string[] GetSynonyms(string term)
-        {
-            return map.Get(term);
+        [Test]
+        public void SynonymAnalyzerViewTest()
+        {   
+            AnalyzerUtil.DisplayTokenWithPositions(synonymAnalyzer, "The quick brown fox jumps over lazy dog");
         }
     }
 }

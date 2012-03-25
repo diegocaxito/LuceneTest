@@ -2,20 +2,18 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{ACD881B8-5906-406B-B1AB-B973B485B448}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{D60A40F1-A8C9-4609-913D-E7E08F391773}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AnlyzerDemo</RootNamespace>
-    <AssemblyName>AnlyzerDemo</AssemblyName>
+    <RootNamespace>SynonymAnalyzer</RootNamespace>
+    <AssemblyName>SynonymAnalyzer</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,8 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -40,6 +37,18 @@
     <Reference Include="Lucene.Net.Analyzers">
       <HintPath>..\..\..\lib\Lucene.Net.Analyzers.dll</HintPath>
     </Reference>
+    <Reference Include="Lucene.Net.FastVectorHighlighter">
+      <HintPath>..\..\..\..\..\..\Users\Diego Caxito\Downloads\Completos\Aplicativos\bibliotecas\Lucene\bin\Contrib\Lucene.Net.FastVectorHighlighter.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.Highlighter">
+      <HintPath>..\..\..\lib\Lucene.Net.Highlighter.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.Search.Regex">
+      <HintPath>..\..\..\lib\Lucene.Net.Search.Regex.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.Search.SimpleFacetedSearch">
+      <HintPath>..\..\..\lib\Lucene.Net.Search.SimpleFacetedSearch.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -49,9 +58,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnalyzerUtil.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="ISynonymEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SynonymAnalyzer.cs" />
+    <Compile Include="SynonymEngineMock.cs" />
+    <Compile Include="SynonymFilter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AnlyzerDemo\AnlyzerDemo.csproj">
+      <Project>{ACD881B8-5906-406B-B1AB-B973B485B448}</Project>
+      <Name>AnlyzerDemo</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

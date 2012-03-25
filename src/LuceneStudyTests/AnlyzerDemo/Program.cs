@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.BR;
 using Lucene.Net.Analysis.Standard;
-using Lucene.Net.Analysis.Tokenattributes;
 using System.Collections;
 
 namespace AnlyzerDemo
@@ -48,23 +46,6 @@ namespace AnlyzerDemo
                 AnalyzerUtil.DisplayTokens(analyzer, text);
                 Console.WriteLine("\n");
             }
-        }
-    }
-
-    public static class AnalyzerUtil
-    {
-        private static void DisplayTokens(TokenStream stream)
-        {
-            TermAttribute term = (TermAttribute) stream.AddAttribute(typeof(TermAttribute));
-            while (stream.IncrementToken())
-            {
-                Console.WriteLine("[{0}]  ", term.Term());
-            }
-        }
-
-        public static void DisplayTokens(Analyzer analyzer, string text)
-        {   
-            DisplayTokens(analyzer.TokenStream("contents", new StringReader(text)));
         }
     }
 }
