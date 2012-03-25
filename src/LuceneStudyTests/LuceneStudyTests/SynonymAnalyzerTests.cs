@@ -79,7 +79,7 @@ namespace LuceneStudyTests
             var termQuery = new TermQuery(new Term("contents", "hops"));
             Assert.AreEqual(1, indexSearcher.Search(termQuery, 1).TotalHits);
 
-            PhraseQuery pq = new PhraseQuery();
+            var pq = new PhraseQuery();
             pq.Add(new Term("contents", "fox"));
             pq.Add(new Term("contents", "hops"));
             Assert.AreEqual(1, indexSearcher.Search(pq, 10).TotalHits);
