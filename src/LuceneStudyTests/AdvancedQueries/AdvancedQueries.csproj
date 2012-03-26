@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{337F8769-997B-4C03-A56F-7F871373834E}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AdvancedQueries</RootNamespace>
+    <AssemblyName>AdvancedQueries</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Lucene.Net">
+      <HintPath>..\..\..\lib\Lucene.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.Analyzers">
+      <HintPath>..\..\..\lib\Lucene.Net.Analyzers.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.Contrib.Core">
+      <HintPath>..\..\..\lib\Lucene.Net.Contrib.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.FastVectorHighlighter">
+      <HintPath>..\..\..\lib\Lucene.Net.FastVectorHighlighter.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.Highlighter">
+      <HintPath>..\..\..\lib\Lucene.Net.Highlighter.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.Queries">
+      <HintPath>..\..\..\lib\Lucene.Net.Queries.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.Search.Regex">
+      <HintPath>..\..\..\lib\Lucene.Net.Search.Regex.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.Search.SimpleFacetedSearch">
+      <HintPath>..\..\..\lib\Lucene.Net.Search.SimpleFacetedSearch.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.Snowball">
+      <HintPath>..\..\..\lib\Lucene.Net.Snowball.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.Spatial">
+      <HintPath>..\..\..\lib\Lucene.Net.Spatial.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.SpellChecker">
+      <HintPath>..\..\..\lib\Lucene.Net.SpellChecker.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\..\..\lib\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.5.9.10348, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="SortingExemple.cs" />
+    <Compile Include="SortingExempleProgram.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
