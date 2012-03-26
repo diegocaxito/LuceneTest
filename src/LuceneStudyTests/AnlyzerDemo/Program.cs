@@ -9,6 +9,9 @@ using System.Collections;
 
 namespace AnlyzerDemo
 {
+    /// <summary>
+    /// Aplicação que recebe um texto e apresenta a forma como atua o Analyzer proposto.
+    /// </summary>
     public class AnalyzerDemo
     {
         public static void Main(string[] args)
@@ -16,10 +19,12 @@ namespace AnlyzerDemo
             string opcao=string.Empty;
             do
             {
+                Console.Clear();
                 Console.WriteLine("Imforme o texto para analizar\nCaso deseja sair digite S.\ntexto:");
                 opcao = Console.ReadLine();
                 if (opcao.ToLower() != "s")
                 {
+                    Console.WriteLine();
                     Analyze(opcao);
                     Console.ReadKey();
                 }
