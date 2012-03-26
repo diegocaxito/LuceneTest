@@ -5,6 +5,9 @@ using Lucene.Net.Analysis.Tokenattributes;
 
 namespace AnlyzerDemo
 {
+    /// <summary>
+    /// Classe helper de Analyzer para demo
+    /// </summary>
     public static class AnalyzerUtil
     {
         private static void DisplayTokens(TokenStream stream)
