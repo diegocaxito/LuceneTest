@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.BR;
 using Lucene.Net.Analysis.Standard;
-using System.Collections;
 
 namespace AnlyzerDemo
 {
@@ -47,7 +43,7 @@ namespace AnlyzerDemo
             {
                 var name = analyzer.GetType().Name;
                 Console.WriteLine("    {0}    ", name);
-                Console.WriteLine("    ");
+                Console.WriteLine("");
                 AnalyzerUtil.DisplayTokens(analyzer, text);
                 Console.WriteLine("\n");
             }
