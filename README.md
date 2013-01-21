@@ -7,6 +7,7 @@ Alguns testes realizados no processo de aprendizado da biblioteca Lucene.Net por
 [Lucene in Action](http://www.amazon.com/Lucene-Action-Second-Edition-Covers/dp/1933988177/ref=sr_1_1?ie=UTF8&qid=1358455947&sr=8-1&keywords=lucene+in+action)
 
 ###Links importantes
+* [Information Retrieval](http://en.wikipedia.org/wiki/Information_retrieval) 
 * [Apache - Lucene](http://lucene.apache.org/core/)
 * [Apache - Sorl](http://lucene.apache.org/solr/)
 * [bobo-browse](http://code.google.com/p/bobo-browse/)
