@@ -8,6 +8,7 @@ Alguns testes realizados no processo de aprendizado da biblioteca Lucene.Net por
 
 ###Links importantes
 * [Information Retrieval](http://en.wikipedia.org/wiki/Information_retrieval) 
+* [Stemming - In linguistic morphology and information retrieval, is the process for reducing inflected (or sometimes derived) words to their stem, base or root form](http://en.wikipedia.org/wiki/Stemming)
 * [Apache - Lucene](http://lucene.apache.org/core/)
 * [Apache - Sorl](http://lucene.apache.org/solr/)
 * [bobo-browse](http://code.google.com/p/bobo-browse/)
