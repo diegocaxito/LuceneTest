@@ -7,8 +7,8 @@ Alguns testes realizados no processo de aprendizado da biblioteca Lucene.Net por
 * Quer ver como o analizer trabalha em torno do seu texto? Acesse [AnalyzerDemo](LuceneTest/tree/master/src/LuceneStudyTests/AnlyzerDemo)
 * Quer entender como trabalhar em queries situações do tipo "Você quiz dizer: ..."? Acesse [SoundsLike](LuceneTest/tree/master/src/LuceneStudyTests/SoundsLike)
 * Quer trabalhar aplicação de sinônimos em suas pesquisas? 
-** [Veja os testes de sinônimos](LuceneTest/blob/master/src/LuceneStudyTests/LuceneStudyTests/SynonymAnalyzerTests.cs)
-** [Customize um analizer de sinônimos](LuceneTest/tree/master/src/LuceneStudyTests/SynonymAnalyzer)
+* * [Veja os testes de sinônimos](LuceneTest/blob/master/src/LuceneStudyTests/LuceneStudyTests/SynonymAnalyzerTests.cs)
+* * [Customize um analizer de sinônimos](LuceneTest/tree/master/src/LuceneStudyTests/SynonymAnalyzer)
 
 
 ##Referências
