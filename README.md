@@ -2,13 +2,13 @@
 
 Alguns testes realizados no processo de aprendizado da biblioteca Lucene.Net port de .Net da biblioteca do Lucene em java.
 
-* Quer aprender ver o básico de Indexar Documentos, Atualizar e Pesquisar? Acesse [IndexingTest.cs](LuceneTest/src/LuceneStudyTests/LuceneStudyTests/IndexingTeste.cs)
-* Quer entender diferentes maneiras de indexar e pesquisar campos? [TermQueryTeste.cs](LuceneTest/src/LuceneStudyTests/LuceneStudyTests/TermQueryTeste.cs)
-* Quer ver como o analizer trabalha em torno do seu texto? Acesse [AnalyzerDemo](LuceneTest/src/LuceneStudyTests/AnlyzerDemo)
-* Quer entender como trabalhar em queries situações do tipo "Você quiz dizer: ..."? Acesse [SoundsLike](LuceneTest/src/LuceneStudyTests/SoundsLike)
+* Quer aprender ver o básico de Indexar Documentos, Atualizar e Pesquisar? Acesse [IndexingTest.cs](src/LuceneStudyTests/LuceneStudyTests/IndexingTeste.cs)
+* Quer entender diferentes maneiras de indexar e pesquisar campos? [TermQueryTeste.cs](src/LuceneStudyTests/LuceneStudyTests/TermQueryTeste.cs)
+* Quer ver como o analizer trabalha em torno do seu texto? Acesse [AnalyzerDemo](src/LuceneStudyTests/AnlyzerDemo)
+* Quer entender como trabalhar em queries situações do tipo "Você quiz dizer: ..."? Acesse [SoundsLike](src/LuceneStudyTests/SoundsLike)
 * Quer trabalhar aplicação de sinônimos em suas pesquisas? 
-  * [Veja os testes de sinônimos](LuceneTest/src/LuceneStudyTests/LuceneStudyTests/SynonymAnalyzerTests.cs)
-  * [Customize um analizer de sinônimos](LuceneTest/src/LuceneStudyTests/SynonymAnalyzer)
+  * [Veja os testes de sinônimos](src/LuceneStudyTests/LuceneStudyTests/SynonymAnalyzerTests.cs)
+  * [Customize um analizer de sinônimos](src/LuceneStudyTests/SynonymAnalyzer)
 
 
 ##Referências
